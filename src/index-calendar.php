@@ -54,4 +54,18 @@ class CalendarOutlook
         return $event;
 
     }
+
+    static function deleteSingleEvent($token,$calendar_id,$emailOutlook){
+        $graph = new Graph();
+        $graph->setBaseUrl("https://graph.microsoft.com/")
+            ->setApiVersion("beta")
+            ->setAccessToken($token);
+
+        $delete_calendar = $graph->createRequest("delete", "/users/".$emailOutlook."/events/".$calendar_id)
+            ->addHeaders(array("Content-Type" => "application/json"))
+            ->setReturnType(BetaModel\User::class)
+            ->setTimeout("1000")
+            ->execute();
+        return $delete_calendar;
+    }
 }
