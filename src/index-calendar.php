@@ -55,6 +55,34 @@ class CalendarOutlook
 
     }
 
+    static function createEvent($token, $data, $emailOutlook )
+    {
+        /*$data = [
+            'Subject' => 'Discuss the Calendar REST API',
+            'Body' => [
+                'ContentType' => 'HTML',
+                'Content' => 'I think it will meet our requirements!',
+            ],
+            'Start' => [
+                'DateTime' => '2022-11-02T10:00:00',
+                'TimeZone' => 'Pacific Standard Time',
+            ],
+            'End' => [
+                'DateTime' => '2022-11-02T11:00:00',
+                'TimeZone' => 'Pacific Standard Time',
+            ],
+        ];*/
+
+        $graph = new Graph();
+        $graph->setAccessToken($token);
+        $url = "/users/".$emailOutlook."/calendar/events";
+        $response = $graph->createRequest("POST", $url)
+            ->attachBody($data)
+            ->setReturnType(BetaModel\User::class)
+            ->execute();
+        return $response;
+    }
+
     static function deleteSingleEvent($token,$calendar_id,$emailOutlook){
         $graph = new Graph();
         $graph->setBaseUrl("https://graph.microsoft.com/")
