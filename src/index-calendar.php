@@ -36,4 +36,22 @@ class CalendarOutlook
             ->execute();
         return json_encode($user);
     }
+
+    static function getEvent($token, $calendar_id,$emailOutlook){
+
+
+        $graph = new Graph();
+        $graph->setBaseUrl("https://graph.microsoft.com/")
+            ->setApiVersion("beta")
+            ->setAccessToken($token);
+
+        $event = $graph->createRequest("get", "/users/".$emailOutlook."/events/".$calendar_id)
+            ->addHeaders(array("Content-Type" => "application/json"))
+            ->setReturnType(BetaModel\User::class)
+            ->setTimeout("1000")
+            ->execute();
+
+        return $event;
+
+    }
 }
